@@ -19,7 +19,20 @@ async function main(){
         });
     })
     app.get('/restaurantreviews', async function (req,res){
-        const restreviews = await db.collection('restaurantreviews').find({}).toArray();
+        let criteria = {};
+        if (req.query.name){
+            criteria.name = {
+                '$regex': req.query.name,
+                '$options':'i'
+            }
+        }
+        if (req.query.min_rating){
+            criteria.rating = {
+                '$gte':parseInt(req.query.min_rating)
+            }
+        }
+        console.log("criteria=", criteria);
+        const restreviews = await db.collection('restaurantreviews').find(criteria).toArray();
         res.json(restreviews);
     })
 
