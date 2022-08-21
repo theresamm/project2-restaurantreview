@@ -18,13 +18,18 @@ async function main(){
             'text':'hello'
         });
     })
+    app.get('/restaurantreviews', async function (req,res){
+        const restreviews = await db.collection('restaurantreviews').find({}).toArray();
+        res.json(restreviews);
+    })
+
     app.post('/restaurantreviews', async function (req,res){
         await db.collection('restaurantreviews').insertOne({
-            "name":"Oishi Restaurant",
-            "cuisine":"Japanese",
-            "location":"Manila",
-            "bestseller":"Tempura",
-            "rating":5
+            "name":req.body.name,
+            "cuisine":req.body.cuisine,
+            "location":req.body.location,
+            "bestseller":req.body.bestseller,
+            "rating":req.body.rating
         })
         res.json({
             'message':'done'
