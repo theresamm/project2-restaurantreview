@@ -32,13 +32,12 @@ async function main(){
                 '$gte':parseInt(req.query.min_rating)
             }
         }
-        console.log("criteria=", criteria);
         const restreviews = await db.collection('restaurantreviews').find(criteria).toArray();
         res.json(restreviews);
     })
 
     app.post('/restaurantreviews', async function (req,res){
-        await db.collection('restaurantreviews').insertOne({
+        const results = await db.collection('restaurantreviews').insertOne({
             "name":req.body.name,
             "cuisine":req.body.cuisine,
             "location":req.body.location,
@@ -46,14 +45,15 @@ async function main(){
             "rating":req.body.rating
         })
         res.json({
-            'message':'done'
+            'message':'New review done',
+            'results': result
         })
     })
     app.put('/restaurantreviews/:reviewId', async function(req,res){
         const review = await db.collection('restaurantreviews').findOne({
             '_id':ObjectId(req.params.reviewId)
         })
-        await db.collection('restaurantreviews').updateOne({
+        const results = await db.collection('restaurantreviews').updateOne({
             '_id':ObjectId(req.params.reviewId)
     },{
         "$set":{
@@ -65,8 +65,17 @@ async function main(){
         }
     })
     res.json({
-        'message':'updated'
+        'message':'Updated review',
+        'results': results
     })
+    })
+    app.delete('/restaurantreviews/:reviewId', async function(req,res){
+        await db.collection('restaurantreviews').deleteOne({
+            '_id':ObjectId(req.params.reviewId)
+        })
+        res.json({
+            'message':"Deleted"
+        })
     })
 }
 main();
