@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const mongoUtil = require('./MongoUtil');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 app.use(express.json())
@@ -47,6 +48,25 @@ async function main(){
         res.json({
             'message':'done'
         })
+    })
+    app.put('/restaurantreviews/:reviewId', async function(req,res){
+        const review = await db.collection('restaurantreviews').findOne({
+            '_id':ObjectId(req.params.reviewId)
+        })
+        await db.collection('restaurantreviews').updateOne({
+            '_id':ObjectId(req.params.reviewId)
+    },{
+        "$set":{
+            'name':req.body.name ? req.body.name : review.name,
+            'cuisine':req.body.cuisine ? req.body.cuisine : review.cuisine,
+            'location':req.body.location ? req.body.location : review.location,
+            'bestseller':req.body.bestseller ? req.body.bestseller : review.bestseller,
+            'rating':req.body.rating ? req.body.rating : review.rating
+        }
+    })
+    res.json({
+        'message':'updated'
+    })
     })
 }
 main();
