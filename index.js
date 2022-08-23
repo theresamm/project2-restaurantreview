@@ -46,7 +46,7 @@ async function main(){
         })
         res.json({
             'message':'New review done',
-            'results': result
+            'results': results
         })
     })
     app.put('/restaurantreviews/:reviewId', async function(req,res){
@@ -75,6 +75,39 @@ async function main(){
         })
         res.json({
             'message':"Deleted"
+        })
+    })
+    app.post('/restaurantreviews/:reviewId/comments', async function (req,res){
+        const results = await db.collection('restaurantreviews').updateOne({
+            _id: ObjectId(req.params.reviewId)
+        },{
+            '$push': {
+                'comments':{
+                    '_id': ObjectId(),
+                    'reviewer_name': req.body.reviewer_name,
+                    'comment': req.body.comment,
+                    'date_of_visit': req.body.date_of_visit
+                }
+            }    
+        })
+        res.json({
+            'message': 'New comment added',
+            'results': results
+        })
+    })
+    app.put('/comments/:commentId/update', async function (req,res){
+        const results = await db.collection('restaurantreviews').updateOne({
+            'comments._id': ObjectId(req.params.commentId)
+        },{
+            '$set':{
+                'comments.$.reviewer_name':req.body.reviewer_name,
+                'comments.$.comment': req.body.comment,
+                'comments.$.date_of_visit':req.body.date_of_visit
+            }
+        })
+        res.json({
+            'message': 'Review details updated',
+            'results': results
         })
     })
 }
