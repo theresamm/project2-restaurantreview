@@ -20,6 +20,7 @@ async function main(){
         });
     })
     app.get('/restaurantreviews', async function (req,res){
+        try{
         let criteria = {};
         if (req.query.name){
             criteria.name = {
@@ -32,8 +33,24 @@ async function main(){
                 '$gte':parseInt(req.query.min_rating)
             }
         }
-        const restreviews = await db.collection('restaurantreviews').find(criteria).toArray();
+        const restreviews = await db.collection('restaurantreviews').find(criteria,{
+            'projection':{
+                '_id':1,
+                'name':1,
+                'cuisine':1,
+                'location':1,
+                'bestseller':1,
+                'rating':1
+            }
+        }).toArray();
         res.json(restreviews);
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
 
     app.post('/restaurantreviews', async function (req,res){
@@ -95,7 +112,7 @@ async function main(){
             'results': results
         })
     })
-    app.put('/comments/:commentId/update', async function (req,res){
+    app.put('/comments/:commentId', async function (req,res){
         const results = await db.collection('restaurantreviews').updateOne({
             'comments._id': ObjectId(req.params.commentId)
         },{
@@ -109,6 +126,27 @@ async function main(){
             'message': 'Review details updated',
             'results': results
         })
+    })
+    app.delete('/comments/:commentId', async function (req,res){
+        const results = await db.collection('restaurantreviews').updateOne({
+            'comments._id':ObjectId(req.params.commentId)
+        },{
+            '$pull':{
+                'comments':{
+                    '_id': ObjectId(req.params.commentId)
+                }
+            }
+        })
+        res.json({
+            'message':'Review deleted',
+            'results':results
+        })
+    })
+    app.get('/restaurantreviews/:reviewId', async function(req,res){
+        const review = await db.collection('restaurantreviews').findOne({
+            _id:ObjectId(req.params.reviewId)
+        });
+        res.json(review);
     })
 }
 main();
