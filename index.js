@@ -23,6 +23,29 @@ function getAccessToken(id, email) {
     })
 }
 
+function verifyAuthenticationJwt(req,res,next){
+    if (req.headers.authorization){
+        const headers = req.headers.authorization;
+        const token = headers.split(" ")[1];
+        jsonwt.verify(token, SECRET_TOKEN, function(invalid, tokenData){
+            if (invalid){
+                res.status(403);
+                res.json({
+                    'error':"Invalid access token"
+                })
+                return;
+            }
+            req.user = tokenData;
+            next();
+        })
+    } else {
+        res.status(403);
+        res.json({
+            'error':"Please provide an access token"
+        })
+    }
+}
+
 async function main(){
     const db = await mongoUtil.connect(MONGOURI, DBNAME);
     app.get('/', function(req,res){
@@ -64,7 +87,7 @@ async function main(){
     }
     })
 
-    app.post('/restaurantreviews', async function (req,res){
+    app.post('/restaurantreviews', verifyAuthenticationJwt, async function (req,res){
         const results = await db.collection('restaurantreviews').insertOne({
             "name":req.body.name,
             "cuisine":req.body.cuisine,
@@ -186,31 +209,13 @@ async function main(){
             })
         }
     })
-    app.get ('/user/:userId', async function(req,res){
-        if (req.headers.authorization){
-            const headers = req.headers.authorization;
-            const token = headers.split(" ")[1];
-            jsonwt.verify(token, SECRET_TOKEN, function(invalid, tokenData){
-                if (invalid){
-                    res.status(403);
-                    res.json({
-                        'error':"Invalid access token"
-                    })
-                    return;
-                }
-                req.user = tokenData;
+    app.get ('/user/:userId', verifyAuthenticationJwt, async function(req,res){
                 res.json({
                     'id': req.user.id,
                     'email': req.user.email,
                     'message':'Profile view'
                 })
-            })
-        } else {
-            res.status(403);
-            res.json({
-                'error':"Please provide an access token"
-            })
-        }
+           
     })
 }
 main();
