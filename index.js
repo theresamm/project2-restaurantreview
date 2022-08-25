@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const jsonwt = require ('jsonwebtoken');
 
 const mongoUtil = require('./MongoUtil');
 const { ObjectId } = require('mongodb');
@@ -11,6 +12,16 @@ app.use(cors());
 
 const MONGOURI = process.env.MONGOURI;
 const DBNAME = process.env.DBNAME;
+const SECRET_TOKEN=process.env.SECRET_TOKEN;
+
+function getAccessToken(id, email) {
+    return jsonwt.sign({
+        'id':id,
+        'email': email
+    }, SECRET_TOKEN,{
+        'expiresIn':'2h'
+    })
+}
 
 async function main(){
     const db = await mongoUtil.connect(MONGOURI, DBNAME);
@@ -147,6 +158,59 @@ async function main(){
             _id:ObjectId(req.params.reviewId)
         });
         res.json(review);
+    })
+    app.post('/users', async function(req,res){
+        const results = await db.collection('users').insertOne({
+            "email":req.body.email,
+            "password":req.body.password
+        });
+        res.json({
+            'message':'New user created',
+            'results':results
+        })
+    })
+    app.post('/login', async function(req,res){
+        const user = await db.collection('users').findOne({
+            'email':req.body.email,
+            'password':req.body.password
+        });
+        if (user) {
+            let token = getAccessToken(user._id, user.email);
+            res.json({
+                'accessToken':token
+            })
+        } else {
+            res.status(401);
+            res.json({
+                'message':'Invalid email or password'
+            })
+        }
+    })
+    app.get ('/user/:userId', async function(req,res){
+        if (req.headers.authorization){
+            const headers = req.headers.authorization;
+            const token = headers.split(" ")[1];
+            jsonwt.verify(token, SECRET_TOKEN, function(invalid, tokenData){
+                if (invalid){
+                    res.status(403);
+                    res.json({
+                        'error':"Invalid access token"
+                    })
+                    return;
+                }
+                req.user = tokenData;
+                res.json({
+                    'id': req.user.id,
+                    'email': req.user.email,
+                    'message':'Profile view'
+                })
+            })
+        } else {
+            res.status(403);
+            res.json({
+                'error':"Please provide an access token"
+            })
+        }
     })
 }
 main();
