@@ -74,6 +74,7 @@ async function main(){
                 'cuisine':1,
                 'location':1,
                 'bestseller':1,
+                'average_cost':1,
                 'rating':1
             }
         }).toArray();
@@ -87,12 +88,13 @@ async function main(){
     }
     })
 
-    app.post('/restaurantreviews', verifyAuthenticationJwt, async function (req,res){
+    app.post('/restaurantreviews', async function (req,res){
         const results = await db.collection('restaurantreviews').insertOne({
             "name":req.body.name,
             "cuisine":req.body.cuisine,
             "location":req.body.location,
             "bestseller":req.body.bestseller,
+            "average_cost":req.body.average_cost,
             "rating":req.body.rating
         })
         res.json({
@@ -112,6 +114,7 @@ async function main(){
             'cuisine':req.body.cuisine ? req.body.cuisine : review.cuisine,
             'location':req.body.location ? req.body.location : review.location,
             'bestseller':req.body.bestseller ? req.body.bestseller : review.bestseller,
+            'average_cost':req.body.average_cost ? req.body.average_cost : review.average_cost,
             'rating':req.body.rating ? req.body.rating : review.rating
         }
     })
