@@ -62,9 +62,32 @@ async function main(){
                 '$options':'i'
             }
         }
-        if (req.query.min_rating){
+        if (req.query.cuisine){
+            criteria.cuisine = {
+                '$regex': req.query.cuisine,
+                '$options':'i'
+            }
+        }
+        if (req.query.location){
+            criteria.location = {
+                '$regex': req.query.location,
+                '$options':'i'
+            }
+        }
+        if (req.query.bestseller){
+            criteria.bestseller = {
+                '$regex': req.query.bestseller,
+                '$options':'i'
+            }
+        }
+        if (req.query.average_cost){
+            criteria.average_cost = {
+                '$lte':parseInt(req.query.average_cost)
+            }
+        }
+        if (req.query.rating){
             criteria.rating = {
-                '$gte':parseInt(req.query.min_rating)
+                '$gte':parseInt(req.query.rating)
             }
         }
         const restreviews = await db.collection('restaurantreviews').find(criteria,{
@@ -128,7 +151,7 @@ async function main(){
             '_id':ObjectId(req.params.reviewId)
         })
         res.json({
-            'message':"Deleted"
+            'message':"Review Deleted"
         })
     })
     app.post('/restaurantreviews/:reviewId/comments', async function (req,res){
@@ -175,7 +198,7 @@ async function main(){
             }
         })
         res.json({
-            'message':'Review deleted',
+            'message':'Comment deleted',
             'results':results
         })
     })
