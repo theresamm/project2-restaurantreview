@@ -97,6 +97,24 @@ async function main(){
                 '$options':'i'
             }
         }
+        if (req.query.dining){
+            criteria.dining = {
+                '$regex': req.query.dining,
+                '$options':'i'
+            }
+        }
+        if (req.query.features){
+            criteria.features = {
+                '$regex': req.query.features,
+                '$options':'i'
+            }
+        }
+        if (req.query.contact){
+            criteria.contact = {
+                '$regex': req.query.contact,
+                '$options':'i'
+            }
+        }
         if (req.query.rating){
             criteria.rating = {
                 '$gte':parseInt(req.query.rating)
@@ -109,7 +127,12 @@ async function main(){
                 'cuisine':1,
                 'location':1,
                 'bestseller':1,
+                'meals':1,
                 'average_cost':1,
+                'store_hours':1,
+                'dining':1,
+                'features':1,
+                'contact':1,
                 'rating':1
             }
         }).toArray();
@@ -129,7 +152,12 @@ async function main(){
             "cuisine":req.body.cuisine,
             "location":req.body.location,
             "bestseller":req.body.bestseller,
+            "meals":req.body.meals,
             "average_cost":req.body.average_cost,
+            "store_hours":req.body.store_hours,
+            "dining":req.body.dining,
+            "features":req.body.features,
+            "contact":req.body.contact,
             "rating":req.body.rating
         })
         res.json({
@@ -149,7 +177,12 @@ async function main(){
             'cuisine':req.body.cuisine ? req.body.cuisine : review.cuisine,
             'location':req.body.location ? req.body.location : review.location,
             'bestseller':req.body.bestseller ? req.body.bestseller : review.bestseller,
+            'meals':req.body.meals ? req.body.meals : review.meals,
             'average_cost':req.body.average_cost ? req.body.average_cost : review.average_cost,
+            'store_hours':req.body.store_hours ? req.body.store_hours : review.store_hours,
+            'dining':req.body.dining ? req.body.dining : review.dining,
+            'features':req.body.features ? req.body.features : review.features,
+            'contact':req.body.contact ? req.body.contact : review.contact,
             'rating':req.body.rating ? req.body.rating : review.rating
         }
     })
@@ -175,7 +208,8 @@ async function main(){
                     '_id': ObjectId(),
                     'reviewer_name': req.body.reviewer_name,
                     'comment': req.body.comment,
-                    'date_of_visit': req.body.date_of_visit
+                    'date_of_visit': req.body.date_of_visit,
+                    'score': req.body.score
                 }
             }    
         })
@@ -191,7 +225,8 @@ async function main(){
             '$set':{
                 'comments.$.reviewer_name':req.body.reviewer_name,
                 'comments.$.comment': req.body.comment,
-                'comments.$.date_of_visit':req.body.date_of_visit
+                'comments.$.date_of_visit':req.body.date_of_visit,
+                'comments.$.score':req.body.score
             }
         })
         res.json({
