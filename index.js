@@ -80,9 +80,21 @@ async function main(){
                 '$options':'i'
             }
         }
+        if (req.query.meals){
+            criteria.meals = {
+                '$regex': req.query.meals,
+                '$options':'i'
+            }
+        }
         if (req.query.average_cost){
             criteria.average_cost = {
                 '$lte':parseInt(req.query.average_cost)
+            }
+        }
+        if (req.query.store_hours){
+            criteria.store_hours = {
+                '$regex': req.query.store_hours,
+                '$options':'i'
             }
         }
         if (req.query.rating){
