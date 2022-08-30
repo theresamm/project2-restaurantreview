@@ -161,7 +161,7 @@ async function main(){
             "rating":req.body.rating
         })
         res.json({
-            'message':'New review done',
+            'message':'New review created',
             'results': results
         })
     })
@@ -214,7 +214,7 @@ async function main(){
             }    
         })
         res.json({
-            'message': 'New comment added',
+            'message': 'New comment created',
             'results': results
         })
     })
