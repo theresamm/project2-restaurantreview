@@ -13,6 +13,6 @@ Here is the deployed live link website: <a href ="https://theresamm.github.io">l
 
 <li>Screenshot of Mongo Document Collection</li>
 
-<img src=images/mongo.png>
+<img src=images/mongo.JPG>
 
 <h2>API DOCUMENTATION</h2>
