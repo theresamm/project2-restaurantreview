@@ -17,38 +17,40 @@ Here is the deployed link website: <a href ="https://github.com/theresamm/projec
 
 <h2>API DOCUMENTATION</h2>
 
-| Title                 		| Create a new restaurant review					            |
-| Method           		| POST									            |
-| Endpoint Path               | /restaurantreviews							            |
-| Body		               |   {									            |
-|			 |	"name":"Joyful Dining Restaurant",				            |
-|			 |	"cuisine":"Filipino",						            |
-|			 |	"location":"Makati City",					            |
-|			 |	"bestseller":["Sinigang", "Kare-Kare", "Crispy Pata", "Pancit Canton"],    |  |			 |	"meals":["All-day breakfast", "Lunch", "Dinner", "Merienda"],	            |
-|			 |	"average_cost":800.00,						            |
-|			 |	"store_hours":{							            |
-|			 |	 	"open":"10:00AM",					            |
-|			 |		"close":"9:00PM",					            |
-|			 |		"available_days":"daily"},				            |
-|			 |	"dining":{"seating":["indoor", "outdoor"],			            |
-|			 |		    "smoke":["smoking", "non-smoking"]},		            |
-|			 |	"features":["Wifi", "Takeout", "Home Delivery", "Parking",],	            |
-|			 |	"contact":["Phone", "E-mail", "Website"],			            |
-|			 |	"rating":9							            |
-|			 |   }									            |
-| Parameters                     | <li>name (string) : Name of the restaurant</li>			            |
-|	                              | <li>cuisine (string) : Type of cuisine</li>				            |
-|	                              | <li>location (string) : Location of restaurant</li>			            |
-|	                              | <li>bestseller (array of strings) : List of bestseller food in the restaurant</li>   |	 |	                              | <li>meals (array of strings) : Meal time</li>			          	            |
-|	                              | <li>average_cost (integer) : Average amount spent per person</li>	            |
-|	                              | <li>store_hours (object) : Time during which the restaurant is open</li>          |
-|	                              | <li>dining (object) : Seating and smoking or non-smoking preferences</li>      |
-|	                              | <li>features (array of strings) : List of amenities and services available.</li>    |
-|	                              | <li>contact(array of strings) : List of contact details</li>  		            |
-|	                              | <li>rating(integer) : Rating of the restaurant</li>	  		            |
-| Expected Response       |   {									            |
-|			 |  “status”:200								            |
-|			 |   }									            |
+| Title                 		| Create a new restaurant review					                           |
+| Method           		        | POST						            			                           |
+| Endpoint Path                 | /restaurantreviews		    					                           |
+| Body		                    |   {									                                       |
+|			                    |	"name":"Joyful Dining Restaurant",				                           |
+|			                    |	"cuisine":"Filipino",		    				                           |
+|			                    |	"location":"Makati City",		    			                           |
+|			                    |	"bestseller":["Sinigang", "Kare-Kare", "Crispy Pata"],                     |
+|			                    |	"meals":["All-day breakfast", "Lunch", "Dinner"]                           |
+|			                    |	"average_cost":800.00,						                               |
+|			                    |	"store_hours":{							                                   |
+|			                    |	 	"open":"10:00AM",					                                   |
+|			                    |		"close":"9:00PM",					                                   |
+|			                    |		"available_days":"daily"},		    		                           |
+|			                    |	"dining":{"seating":["indoor", "outdoor"],		                           |
+|			                    |		    "smoke":["smoking", "non-smoking"]},		                       |
+|			                    |	"features":["Wifi", "Takeout", "Home Delivery"],	                       |
+|			                    |	"contact":["Phone", "E-mail", "Website"],	                               |
+|			                    |	"rating":9			            				                           |
+|			                    |   }									                                       |
+| Parameters                    |<li>name (string) : Name of the restaurant</li>			                   |
+|	                            |<li>cuisine (string) : Type of cuisine</li>				                   |
+|	                            |<li>location (string) : Location of restaurant</li>			               |
+|	                            |<li>bestseller(array of strings):List of bestseller food in the restaurant<li>|	 
+|	                            |<li>meals (array of strings) : Meal time</li>			          	           |
+|	                            |<li>average_cost (integer) : Average amount spent per person</li>	           |
+|	                            |<li>store_hours (object) : Time during which the restaurant is open</li>      |
+|	                            |<li>dining (object) : Seating and smoking or non-smoking preferences</li>     |
+|	                            |<li>features (array of strings):List of amenities and services available</li> |
+|	                            |<li>contact(array of strings) : List of contact details</li>  		           |
+|	                            |<li>rating(integer) : Rating of the restaurant</li>	  		               |
+| Expected Response             |   {									                                       |
+|			                    |  “status”:200								                                   |
+|			                    |   }									                                        |
 
 
 | Title                 		| Create a new comment						            |
