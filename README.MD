@@ -17,6 +17,7 @@ Here is the deployed link website: <a href ="https://github.com/theresamm/projec
 
 <h2>API DOCUMENTATION</h2>
 
+| ------------------------------| -----------------------------------------------------------------------------|
 | Title                 		| Create a new restaurant review					                           |
 | Method           		        | POST						            			                           |
 | Endpoint Path                 | /restaurantreviews		    					                           |
@@ -50,7 +51,9 @@ Here is the deployed link website: <a href ="https://github.com/theresamm/projec
 |	                            |<li>rating(integer) : Rating of the restaurant</li>	  		               |
 | Expected Response             |   {									                                       |
 |			                    |  “status”:200								                                   |
-|			                    |   }									                                        |
+|			                    |   }									                                       |
+| ------------------------------| -----------------------------------------------------------------------------|
+
 
 
 | Title                 		| Create a new comment						            |
