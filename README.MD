@@ -25,9 +25,9 @@ Here is the deployed link website: <a href ="https://github.com/theresamm/projec
 <h2>TESTING</h2>
 
 Test cases for API endpoints can be found in the links below:
-<a href = images/test1.JPG>Test 1</a>
-<a href = images/test2.JPG>Test 2</a>
-<a href = images/test3.JPG>Test 3</a>
+<a href = images/test1.JPG>POST</a>
+<a href = images/test2.JPG>GET</a>
+<a href = images/test3.JPG>PUT AND DELETE</a>
 
 <h3>Credits and Acknowledgement</h3>
 <li>MongoDB - https://cloud.mongodb.com</li>
