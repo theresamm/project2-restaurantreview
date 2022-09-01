@@ -93,13 +93,13 @@ async function main(){
         }
         if (req.query.store_hours){
             criteria.store_hours = {
-                '$regex': req.query.store_hours,
+                '$elemMatch': req.query.store_hours,
                 '$options':'i'
             }
         }
         if (req.query.dining){
             criteria.dining = {
-                '$regex': req.query.dining,
+                '$elemMatch': req.query.dining,
                 '$options':'i'
             }
         }
