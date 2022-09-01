@@ -137,6 +137,7 @@ async function main(){
             }
         }).toArray();
         res.json(restreviews);
+
     } catch (e) {
         console.log(e);
         res.status(500);
@@ -146,7 +147,7 @@ async function main(){
     }
     })
 
-    app.post('/restaurantreviews', async function (req,res){
+    app.post('/restaurantreviews', verifyAuthenticationJwt, async function (req,res){
         const results = await db.collection('restaurantreviews').insertOne({
             "name":req.body.name,
             "cuisine":req.body.cuisine,
@@ -165,7 +166,7 @@ async function main(){
             'results': results
         })
     })
-    app.put('/restaurantreviews/:reviewId', async function(req,res){
+    app.put('/restaurantreviews/:reviewId', verifyAuthenticationJwt, async function(req,res){
         const review = await db.collection('restaurantreviews').findOne({
             '_id':ObjectId(req.params.reviewId)
         })
@@ -191,7 +192,7 @@ async function main(){
         'results': results
     })
     })
-    app.delete('/restaurantreviews/:reviewId', async function(req,res){
+    app.delete('/restaurantreviews/:reviewId', verifyAuthenticationJwt, async function(req,res){
         await db.collection('restaurantreviews').deleteOne({
             '_id':ObjectId(req.params.reviewId)
         })
@@ -199,7 +200,7 @@ async function main(){
             'message':"Review Deleted"
         })
     })
-    app.post('/restaurantreviews/:reviewId/comments', async function (req,res){
+    app.post('/restaurantreviews/:reviewId/comments', verifyAuthenticationJwt, async function (req,res){
         const results = await db.collection('restaurantreviews').updateOne({
             _id: ObjectId(req.params.reviewId)
         },{
@@ -218,7 +219,7 @@ async function main(){
             'results': results
         })
     })
-    app.put('/comments/:commentId', async function (req,res){
+    app.put('/comments/:commentId', verifyAuthenticationJwt, async function (req,res){
         const results = await db.collection('restaurantreviews').updateOne({
             'comments._id': ObjectId(req.params.commentId)
         },{
@@ -230,11 +231,11 @@ async function main(){
             }
         })
         res.json({
-            'message': 'Review details updated',
+            'message': 'Comment details updated',
             'results': results
         })
     })
-    app.delete('/comments/:commentId', async function (req,res){
+    app.delete('/comments/:commentId', verifyAuthenticationJwt, async function (req,res){
         const results = await db.collection('restaurantreviews').updateOne({
             'comments._id':ObjectId(req.params.commentId)
         },{
