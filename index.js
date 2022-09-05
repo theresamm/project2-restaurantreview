@@ -148,6 +148,7 @@ async function main(){
     })
 
     app.post('/restaurantreviews', verifyAuthenticationJwt, async function (req,res){
+        try{
         const results = await db.collection('restaurantreviews').insertOne({
             "name":req.body.name,
             "cuisine":req.body.cuisine,
@@ -165,8 +166,16 @@ async function main(){
             'message':'New review created',
             'results': results
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.put('/restaurantreviews/:reviewId', verifyAuthenticationJwt, async function(req,res){
+        try{
         const review = await db.collection('restaurantreviews').findOne({
             '_id':ObjectId(req.params.reviewId)
         })
@@ -191,16 +200,32 @@ async function main(){
         'message':'Updated review',
         'results': results
     })
+} catch (e) {
+    console.log(e);
+    res.status(500);
+    res.json({
+        'error': "Internal server error"
+    })
+}
     })
     app.delete('/restaurantreviews/:reviewId', verifyAuthenticationJwt, async function(req,res){
+        try{
         await db.collection('restaurantreviews').deleteOne({
             '_id':ObjectId(req.params.reviewId)
         })
         res.json({
             'message':"Review Deleted"
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.post('/restaurantreviews/:reviewId/comments', verifyAuthenticationJwt, async function (req,res){
+        try{
         const results = await db.collection('restaurantreviews').updateOne({
             _id: ObjectId(req.params.reviewId)
         },{
@@ -218,8 +243,16 @@ async function main(){
             'message': 'New comment created',
             'results': results
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.put('/comments/:commentId', verifyAuthenticationJwt, async function (req,res){
+        try{
         const results = await db.collection('restaurantreviews').updateOne({
             'comments._id': ObjectId(req.params.commentId)
         },{
@@ -234,8 +267,16 @@ async function main(){
             'message': 'Comment details updated',
             'results': results
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.delete('/comments/:commentId', verifyAuthenticationJwt, async function (req,res){
+        try{
         const results = await db.collection('restaurantreviews').updateOne({
             'comments._id':ObjectId(req.params.commentId)
         },{
@@ -249,14 +290,30 @@ async function main(){
             'message':'Comment deleted',
             'results':results
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.get('/restaurantreviews/:reviewId', async function(req,res){
+        try{
         const review = await db.collection('restaurantreviews').findOne({
             _id:ObjectId(req.params.reviewId)
         });
         res.json(review);
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.post('/users', async function(req,res){
+        try{
         const results = await db.collection('users').insertOne({
             "email":req.body.email,
             "password":req.body.password
@@ -265,8 +322,16 @@ async function main(){
             'message':'New user created',
             'results':results
         })
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.post('/login', async function(req,res){
+        try{
         const user = await db.collection('users').findOne({
             'email':req.body.email,
             'password':req.body.password
@@ -282,14 +347,28 @@ async function main(){
                 'message':'Invalid email or password'
             })
         }
+    } catch (e) {
+        console.log(e);
+        res.status(500);
+        res.json({
+            'error': "Internal server error"
+        })
+    }
     })
     app.get ('/user/:userId', verifyAuthenticationJwt, async function(req,res){
+        try{
                 res.json({
                     'id': req.user.id,
                     'email': req.user.email,
                     'message':'Profile view'
                 })
-           
+            } catch (e) {
+                console.log(e);
+                res.status(500);
+                res.json({
+                    'error': "Internal server error"
+                })
+            }
     })
 }
 main();
